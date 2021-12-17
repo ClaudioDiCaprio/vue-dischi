@@ -1,5 +1,6 @@
 <template>
     <main>
+        <GenreSelection @selectedGenre="changeSelect"/>
         <section>
             <CardRecord
                 v-for="record, i in RecordList"
@@ -14,11 +15,13 @@
 
 <script>
 import CardRecord from '@/components/CardRecord.vue'
+import GenreSelection from '@/components/GenreSelection.vue'
 import axios from "axios";
 export default {
     name: 'Records',
     components: {
         CardRecord,
+        GenreSelection,
     },
     data() {
         return {
@@ -32,6 +35,9 @@ export default {
     },
     computed : {
         RecordList(){
+             if (this.selectedGenre === 'all') {
+                return this.recordList
+            }
             return this.recordList.filter((item) => {
                 return item.genre.includes(this.selectedGenre)
             })
@@ -45,6 +51,10 @@ export default {
                 this.recordList = result.data.response
             })
         },
+        changeSelect(selezione){
+            this.selectedGenre = selezione
+            console.log(this.selectedGenre);
+        }
         
     }
 }
